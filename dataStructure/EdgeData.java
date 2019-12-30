@@ -65,5 +65,8 @@ public class EdgeData implements edge_data  {
 		this.tag=t;
 		
 	}
-
+	public String toString() {
+		 
+		return src + "-----" + w + "----->" +dst;
+	}
 }

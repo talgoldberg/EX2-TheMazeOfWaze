@@ -7,14 +7,11 @@ public class DGraph implements graph{
 	
 	private HashMap<Integer,node_data> nodeCol=new HashMap<Integer,node_data>();
 	private HashMap<Integer,HashMap<Integer,edge_data>> edgeCol=new HashMap<Integer,HashMap<Integer,edge_data>>();
-	
+	int MC=0;
 	
 	public DGraph() {
 		
 	}
-	
-	
-
 	
 	public DGraph(HashMap<Integer,node_data> n,HashMap<Integer,HashMap<Integer,edge_data>> edgeCol1) {
 		
@@ -40,9 +37,10 @@ public class DGraph implements graph{
 	@Override
 	public void addNode(node_data n) {
 	
-		if(!nodeCol.containsKey(n.getKey()))	
+		if(!nodeCol.containsKey(n.getKey())) {	
 		nodeCol.put(n.getKey(),(node_data) n);
-		
+		MC++;
+		}
 	}
 
 	@Override
@@ -59,6 +57,8 @@ public class DGraph implements graph{
 			HashMap<Integer,edge_data> help=new HashMap<Integer,edge_data>();
 			help.put(dest, newedge);
 			edgeCol.put(src, help);
+			MC++;
+		
 		}
 	
 	}
@@ -74,9 +74,9 @@ public class DGraph implements graph{
 	@Override
 	public Collection<edge_data> getE(int node_id) {
 		
-
-
-		return edgeCol.get(node_id).values();
+		if(edgeCol.get(node_id)!=null)
+			return edgeCol.get(node_id).values();
+	return null;
 	
 	}
 
@@ -86,7 +86,7 @@ public class DGraph implements graph{
 				if(edgeCol.get(e)!=null) {
 					if(edgeCol.get(e).get(key)!=null) {
 						 edgeCol.get(e).remove(key);
-						 
+						 MC++;
 					}
 			 	}
 		}
@@ -98,8 +98,10 @@ public class DGraph implements graph{
 		
 		if(edgeCol.get(src)!=null) {
 		if(edgeCol.get(src).get(dest)!=null) {
+			MC++;
 			return edgeCol.get(src).remove(dest);
-			}
+			
+		}
 		}
 		return null;
 	}
@@ -117,8 +119,24 @@ public class DGraph implements graph{
 
 	@Override
 	public int getMC() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return MC;
 	}
+	public String toString()
 
+	{
+
+		String ans="";
+
+		for(Entry<Integer, HashMap<Integer, edge_data>> e: edgeCol.entrySet())
+
+		{
+
+			ans+=e.getValue().toString();
+
+		}
+
+		return "Edges"+ans+"\n"+"Nodes:\n"+nodeCol.toString();
+
+	}
 }
